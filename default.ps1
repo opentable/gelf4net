@@ -192,11 +192,11 @@ task Release -depends CreatePackages {
 	}
 
 	Write-Output "Build Number: $BuildNumber"
-
+	Write-Output "##teamcity[buildNumber '$asmVersion']"
+	
 	$asmVersion = $ProductVersion + "." + $PatchVersion + "." + $BuildNumber 
 	$script:packageVersion = $asmVersion
 
-	Write-Output "##teamcity[buildNumber '$asmVersion']"
 
 		$asmInfo = "using System;
 using System.Reflection;
