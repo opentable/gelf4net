@@ -117,7 +117,7 @@ task CompileMain -depends InstallDependentPackages, InitEnvironment, Init {
  
  task CompileSamples -depends InstallDependentPackages, InitEnvironment, Init {
  	$solutionFile = "examples\examples.sln"
-	exec { &$script:msBuild $solutionFile /p:OutDir="$buildBase\examples" }
+	exec { &$script:msBuild $solutionFile /p:OutDir="$buildBase\examples\" }
  }
  
  task TestMain -depends CompileMain {
