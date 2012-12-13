@@ -7,6 +7,7 @@
 	$DownloadDependentPackages = $true
 	$UploadPackage = $false
 	$NugetKey = ""
+	$PackageVersion = $null
 }
 
 $baseDir  = resolve-path .
@@ -175,8 +176,7 @@ task CreatePackages -depends PrepareRelease  {
 	$script:packit.package_tags = "tools utilities"
 	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
 	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\gelf4net.dll"
-	$script:packit.package_version = $script:packageVersion
-	invoke-packit $packageName $script:packageVersion @{"log4net"="1.2.10"} "binaries\gelf4net.dll" @{} 
+	invoke-packit $packageName $PackageVersion @{"log4net"="1.2.10"} "binaries\gelf4net.dll" @{} 
 	#endregion
 		
 	remove-module packit
@@ -190,7 +190,7 @@ task CreatePackages -depends PrepareRelease  {
 	Write-Output "Build Number: $BuildNumber"
 	
 	$asmVersion = $ProductVersion + "." + $PatchVersion + "." + $BuildNumber 
-	$script:packageVersion = $asmVersion
+	$PackageVersion = $asmVersion
 
 	Write-Output "##teamcity[buildNumber '$asmVersion']"
 	
