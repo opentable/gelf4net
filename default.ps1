@@ -24,7 +24,7 @@ $script:isEnvironmentInitialized = $false
 $script:ilmergeTargetFramework = ""
 $script:msBuildTargetFramework = ""	
 $script:packageVersion = "0.1.1.6"
-$nunitexec = "$toolsDir\nunit\nunit-console.exe"
+$nunitexec = "packages\nunit.runners.2.6.2\tools\nunit-console.exe"
 $script:nunitTargetFramework = "/framework=4.0";
 
 include $toolsDir\psake\buildutils.ps1
@@ -100,7 +100,7 @@ task InitEnvironment -depends DetectOperatingSystemArchitecture {
 }
  
 task CompileMain -depends GenerateAssemblyInfo, InstallDependentPackages, InitEnvironment, Init {
- 	$solutionFile = "Gelf4net.sln"
+ 	$solutionFile = "src\Gelf4net.sln"
 	exec { &$script:msBuild $solutionFile /p:OutDir="$buildBase\" }
 		
 	$assemblies = @()
