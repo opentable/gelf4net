@@ -115,6 +115,11 @@ task CompileMain -depends GenerateAssemblyInfo, InstallDependentPackages, InitEn
 	echo $mergeLogContent
  }
  
+ task CompileSamples -depends GenerateAssemblyInfo, InstallDependentPackages, InitEnvironment, Init {
+ 	$solutionFile = "examples\examples.sln"
+	exec { &$script:msBuild $solutionFile /p:OutDir="$buildBase\examples" }
+ }
+ 
  task TestMain -depends CompileMain {
 
 	if((Test-Path -Path $buildBase\test-reports) -eq $false){
