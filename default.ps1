@@ -167,7 +167,7 @@ task CreatePackages -depends PrepareRelease  {
 	$packit.targeted_Frameworks = "net40";
 
 	#region Packing
-	$packit.package_description = "GELF log4net Appender - graylog2. Built for log4net 1.2.10"
+	$packit.package_description = "GELF log4net Appender - graylog2. Built for log4net 1.2.11"
 	$script:packit.package_owners = "micahlmartin"
 	$script:packit.package_authors = "micahlmartin"
 	$script:packit.release_notes = ""
@@ -176,7 +176,7 @@ task CreatePackages -depends PrepareRelease  {
 	$script:packit.package_tags = "tools utilities"
 	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
 	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\gelf4net.dll"
-	invoke-packit $packageName $PackageVersion @{"log4net"="[1.2.10]"} "binaries\gelf4net.dll" @{} 
+	invoke-packit $packageName $PackageVersion @{"log4net"="[1.2.11]"} "binaries\gelf4net.dll" @{} 
 	#endregion
 		
 	remove-module packit
