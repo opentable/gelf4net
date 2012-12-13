@@ -21,3 +21,6 @@ _[Rr]e[Ss]harper.*/
 *.ncrunchproject
 *.ncrunchsolution
 TestResults
+.DS_Store
+*.dotcover
+*.userprefs
