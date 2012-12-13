@@ -37,19 +37,22 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="RabbitMQ.Client, Version=3.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RabbitMQ.Client.3.0.0\lib\net30\RabbitMQ.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="RabbitMQ.ServiceModel, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RabbitMQ.ServiceModel.3.0.0\lib\net30\RabbitMQ.ServiceModel.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="RabbitMQ.Client, Version=2.3.1.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce">
-      <HintPath>..\packages\RabbitMQ.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="RabbitMQ.ServiceModel, Version=2.3.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\RabbitMQ.ServiceModel.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Appender\GelfAmqpAppender.cs" />
