@@ -99,7 +99,7 @@ task InitEnvironment -depends DetectOperatingSystemArchitecture {
 	}
 }
  
-task CompileMain -depend, InstallDependentPackages, InitEnvironment, Init {
+task CompileMain -depends InstallDependentPackages, InitEnvironment, Init {
  	$solutionFile = "src\Gelf4net.sln"
 	exec { &$script:msBuild $solutionFile /p:OutDir="$buildBase\" }
 		
