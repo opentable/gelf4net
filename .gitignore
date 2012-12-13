@@ -24,3 +24,4 @@ TestResults
 .DS_Store
 *.dotcover
 *.userprefs
+packages/**/*
