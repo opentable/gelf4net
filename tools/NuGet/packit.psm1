@@ -2,24 +2,12 @@
 $script:packit = @{}
 $script:packit.push_to_nuget = $false      # Set the variable to true to push the package to NuGet galary.
 
-$script:packit.default_package = "Bouncer"
-$script:packit.package_owners = "BoomTown"
-$script:packit.package_authors = "micahlmartin"
-$script:packit.package_description = "A utility for selectively enabling features in .NET. Similar to Facebooks GateKeeper."
-$script:packit.release_notes = "
-Fixed issue with ILMerge and .NET 4.5 http://bit.ly/xkNOsO
-"
+
 $script:packit.package_language = "en-US"
-$script:packit.package_licenseUrl = "https://github.com/BoomTownROI/Bouncer"
-$script:packit.package_projectUrl = "https://github.com/BoomTownROI/Bouncer"
 $script:packit.package_requireLicenseAcceptance = $false;
-$script:packit.package_tags = "tools utilities"
-$script:packit.package_version = "0.1.1.0"
-$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
 $script:packit.binaries_Location = ".\binaries"
 $script:packit.framework_Isolated_Binaries_Loc = ".\build\lib"
 $script:packit.targeted_Frameworks = "net35","net40"
-$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\Bouncer.dll"
 $script:packit.packageOutPutDir = ".\packages"
 $script:packit.PackagingArtifactsRoot = ".\NuGet\PackagingArtifacts"
 $script:packit.nugetCommand = ".\tools\Nuget\NuGet.exe"

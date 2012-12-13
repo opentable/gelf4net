@@ -1,4 +1,8 @@
 ﻿properties {
+	$isCIBuild = $false
+	$ProductVersion = "1.0"
+	$BuildNumber = "0";
+	$PatchVersion = "2"
 	$TargetFramework = "net-4.0"
 	$DownloadDependentPackages = $true
 	$UploadPackage = $false
@@ -20,7 +24,7 @@ $script:isEnvironmentInitialized = $false
 $script:ilmergeTargetFramework = ""
 $script:msBuildTargetFramework = ""	
 $script:packageVersion = "0.1.1.6"
-$nunitexec = "packages\NUnit.Runners.lite.2.6.0.12051\nunit-console.exe"
+$nunitexec = "$toolsDir\nunit\nunit-console.exe"
 $script:nunitTargetFramework = "/framework=4.0";
 
 include $toolsDir\psake\buildutils.ps1
@@ -95,19 +99,19 @@ task InitEnvironment -depends DetectOperatingSystemArchitecture {
 	}
 }
  
-task CompileMain -depends InstallDependentPackages, InitEnvironment, Init {
- 	$solutionFile = "Bouncer.sln"
+task CompileMain -depends GenerateAssemblyInfo, InstallDependentPackages, InitEnvironment, Init {
+ 	$solutionFile = "Gelf4net.sln"
 	exec { &$script:msBuild $solutionFile /p:OutDir="$buildBase\" }
-	
-	#Copy-Item "$buildBase\Bouncer.dll" $binariesDir
 		
 	$assemblies = @()
-	$assemblies +=	dir $buildBase\Bouncer.dll
-	$assemblies  +=  dir $buildBase\Newtonsoft.Json.dll
+	$assemblies += dir $buildBase\Gelf4net.dll
+	$assemblies += dir $buildBase\Newtonsoft.Json.dll
+	$assemblies += dir $buildBase\RabbitMQ.Client.dll
+	$assemblies += dir $buildBase\RabbitMQ.ServiceModel.dll
 
-	& $ilMergeTool /target:"dll" /out:"$binariesDir\Bouncer.dll" /internalize /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\BouncerMergeLog.txt" $assemblies
-	$mergeLogContent = Get-Content "$buildBase\BouncerMergeLog.txt"
-	echo "------------------------------Bouncer Merge Log-----------------------"
+	& $ilMergeTool /target:"dll" /out:"$binariesDir\gelf4net.dll" /internalize /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\Gelf4netMergeLog.txt" $assemblies
+	$mergeLogContent = Get-Content "$buildBase\Gelf4netMergeLog.txt"
+	echo "------------------------------Gelf4net Merge Log-----------------------"
 	echo $mergeLogContent
  }
  
@@ -138,6 +142,10 @@ task PrepareRelease -depends CompileMain, TestMain {
  
 task CreatePackages -depends PrepareRelease  {
 
+	$packageName = "gelf4net"
+	if($isCIBuild) {
+		$packageName += "-CI"
+	}
 	if(($UploadPackage) -and ($NugetKey -eq "")){
 		throw "Could not find the NuGet access key Package Cannot be uploaded without access key"
 	}
@@ -153,9 +161,17 @@ task CreatePackages -depends PrepareRelease  {
 	$packit.targeted_Frameworks = "net40";
 
 	#region Packing
-	$packageName = "BouncerUtil"
-	$packit.package_description = "A utility for selectively enabling features in .NET. Similar to Facebooks GateKeeper."
-	invoke-packit $packageName $script:packageVersion @{} "binaries\Bouncer.dll" @{} 
+	$packit.package_description = "GELF log4net Appender - graylog2"
+	$script:packit.package_owners = "micahlmartin"
+	$script:packit.package_authors = "micahlmartin"
+	$script:packit.release_notes = ""
+	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
+	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
+	$script:packit.package_tags = "tools utilities"
+	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
+	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\gelf4net.dll"
+	$script:packit.package_version = $script:packageVersion
+	invoke-packit $packageName $script:packageVersion @{"log4net"="1.2.10"} "binaries\gelf4net.dll" @{} 
 	#endregion
 		
 	remove-module packit
@@ -164,4 +180,32 @@ task CreatePackages -depends PrepareRelease  {
 task Release -depends CreatePackages {
  
  }
+ 
+ task GenerateAssemblyInfo {
+	if($env:BUILD_NUMBER -ne $null) {
+    	$BuildNumber = $env:BUILD_NUMBER
+	}
+
+	Write-Output "Build Number: $BuildNumber"
+
+	$asmVersion = $ProductVersion + "." + $PatchVersion + "." + $BuildNumber 
+	$script:packageVersion = $asmVersion
+
+	Write-Output "##teamcity[buildNumber '$asmVersion']"
+
+		$asmInfo = "using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Runtime.CompilerServices;
+
+[assembly: AssemblyCompany(""gelf4net"")]
+[assembly: AssemblyFileVersion(""$asmVersion"")]
+[assembly: AssemblyVersion(""$asmVersion"")]	
+[assembly: AssemblyCopyright(""Copyright ©  2011"")]
+[assembly: ComVisible(false)]	
+"
+
+	sc -Path "$baseDir\SharedAssemblyInfo.cs" -Value $asmInfo
+}
 

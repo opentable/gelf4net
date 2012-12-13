@@ -25,3 +25,5 @@ TestResults
 *.dotcover
 *.userprefs
 packages/**/*
+binaries
+*testresult*
