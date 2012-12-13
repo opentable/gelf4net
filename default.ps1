@@ -99,7 +99,7 @@ task InitEnvironment -depends DetectOperatingSystemArchitecture {
 	}
 }
  
-task CompileMain -depends GenerateAssemblyInfo, InstallDependentPackages, InitEnvironment, Init {
+task CompileMain -depend, InstallDependentPackages, InitEnvironment, Init {
  	$solutionFile = "src\Gelf4net.sln"
 	exec { &$script:msBuild $solutionFile /p:OutDir="$buildBase\" }
 		
@@ -115,7 +115,7 @@ task CompileMain -depends GenerateAssemblyInfo, InstallDependentPackages, InitEn
 	echo $mergeLogContent
  }
  
- task CompileSamples -depends GenerateAssemblyInfo, InstallDependentPackages, InitEnvironment, Init {
+ task CompileSamples -depends InstallDependentPackages, InitEnvironment, Init {
  	$solutionFile = "examples\examples.sln"
 	exec { &$script:msBuild $solutionFile /p:OutDir="$buildBase\examples" }
  }
@@ -181,10 +181,6 @@ task CreatePackages -depends PrepareRelease  {
 		
 	remove-module packit
  } 
-
-task Release -depends CreatePackages {
- 
- }
  
  task GenerateAssemblyInfo {
 	if($env:BUILD_NUMBER -ne $null) {
@@ -192,12 +188,12 @@ task Release -depends CreatePackages {
 	}
 
 	Write-Output "Build Number: $BuildNumber"
-	Write-Output "##teamcity[buildNumber '$asmVersion']"
 	
 	$asmVersion = $ProductVersion + "." + $PatchVersion + "." + $BuildNumber 
 	$script:packageVersion = $asmVersion
 
-
+	Write-Output "##teamcity[buildNumber '$asmVersion']"
+	
 		$asmInfo = "using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -214,3 +210,5 @@ using System.Runtime.CompilerServices;
 	sc -Path "$baseDir\SharedAssemblyInfo.cs" -Value $asmInfo
 }
 
+task Release -depends CompileMain, TestMain, CreatePackages, CompileSamples
+task CompileAll -depends GenerateAssemblyInfo, CompileMain, TestMain, CompileSamples
