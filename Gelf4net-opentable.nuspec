@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Gelf4net-opentable</id>
+    <version>1.0.0</version>
+    <title>Gelf4net-opentable</title>
+    <authors>opentable</authors>
+    <owners>opentable</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/opentable/gelf4net</projectUrl>
+    <iconUrl>http://nuget.org/Content/Images/packageDefaultIcon.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>GELF log4net Appender - graylog2. Built for log4net 1.2.11 (2.0.0)</description>
+    <releaseNotes />
+    <copyright>Copyright 2013</copyright>
+    <language />
+    <tags>tools utilities</tags>
+    <dependencies>
+			<dependency id="log4net" version="1.2.11.0" />
+			<dependency id="Newtonsoft.Json" version="4.5.0.0" />
+			<dependency id="RabbitMQ.Client" version="3.1.5.0" />
+			<dependency id="RabbitMQ.ServiceModel" version="3.1.5.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="src\Gelf4net\bin\Release\gelf4net.dll" target="lib\net40\gelf4net.dll" />
+  </files>
+</package>
