@@ -17,7 +17,7 @@
     <tags>tools utilities</tags>
     <dependencies>
 			<dependency id="log4net" version="1.2.11.0" />
-			<dependency id="Newtonsoft.Json" version="4.5.0.0" />
+			<dependency id="Newtonsoft.Json" version="5.0.6" />
 			<dependency id="RabbitMQ.Client" version="3.1.5.0" />
 			<dependency id="RabbitMQ.ServiceModel" version="3.1.5.0" />
     </dependencies>
